@@ -6,18 +6,18 @@ public class Account implements Serializable{
 	private String username;
 	private String password;
 	private boolean isAdmin;
-	private String fname;
-	private String lname;
+	private String firstName;
+	private String lastName;
 	private String email;
 	
 	public Account(){}
 	
-	public Account(String username, String password, boolean isAdmin, String fname, String lname, String email){
+	public Account(String username, String password, boolean isAdmin, String firstName, String lastName, String email){
 		this.username = username;
 		this.password = password;
 		this.isAdmin = isAdmin;
-		this.fname = fname;
-		this.lname = lname;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
 	}
 	
@@ -45,20 +45,24 @@ public class Account implements Serializable{
 		this.isAdmin = isAdmin;
 	}
 
-	public String getFname() {
-		return fname;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFname(String fname) {
-		this.fname = fname;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getLname() {
-		return lname;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setLname(String lname) {
-		this.lname = lname;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 	public String getEmail() {

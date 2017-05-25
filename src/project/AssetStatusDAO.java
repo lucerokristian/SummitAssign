@@ -1,6 +1,5 @@
 package project;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -9,7 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-public class AssetDAO {
+public class AssetStatusDAO {
 	private static SessionFactory factory;
 	static{
 		try{
@@ -19,39 +18,16 @@ public class AssetDAO {
 	        throw new ExceptionInInitializerError(ex); 
 	    }
 	}
-	//check if assetTag already exists, return FALSE if it already EXISTS.
-	public boolean checkAssetTag(String assetTag){
-		Session session = factory.openSession();
-		Transaction tx = null;
-		boolean flag = true;
-		try {
-			tx = session.beginTransaction();
-			List records = session.createQuery("FROM Asset").list();
-			for(Iterator iterator = records.iterator(); iterator.hasNext();){
-				Asset asset = (Asset) iterator.next();
-				if(asset.getAssetTag().equals(assetTag)){
-					flag = false;
-					break;
-				}
-			}
-			tx.commit();
-		} catch (HibernateException e) {
-			if (tx!=null) tx.rollback();
-			e.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return flag;
-	}
 	
-	public int add(String branch, String assetTag, String assetType){
+	//add status information for an asset
+	public int add(int status, int userId, int assetId){
 		Session session = factory.openSession();
 		Transaction tx = null;
 		int primaryKey = 0;
 		try{
 			tx = session.beginTransaction();
-	        Asset asset = new Asset(branch, assetTag, assetType);
-	        primaryKey = (int) session.save(asset); //save() returns primary key of the inserted record
+	        AssetStatus assetStatus = new AssetStatus(status, userId, assetId);
+	        primaryKey = (int) session.save(assetStatus); //save() returns primary key of the inserted record
 	        tx.commit();
 	      }catch (HibernateException e) {
 	         if (tx!=null) tx.rollback();
@@ -61,14 +37,15 @@ public class AssetDAO {
 	      }
 		return primaryKey;
 	}
-
-	public void delete(String assetTag){
+	
+	//delete by asset id
+	public void delete(int assetId){
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try{
 			tx = session.beginTransaction();
-	        Asset asset = (Asset) session.get(Asset.class, assetTag);
-	        session.delete(asset); 
+	        AssetStatus assetStatus = (AssetStatus) session.get(AssetStatus.class, assetId);
+	        session.delete(assetStatus); 
 	        tx.commit();
 	      }catch (HibernateException e) {
 	         if (tx!=null) tx.rollback();
@@ -78,14 +55,14 @@ public class AssetDAO {
 	      }
 	}
 	
-	//return all the assets as List
-	public List retrieve(){
+	//retrieve and return all the asset status as List
+	public List retrieve(int assetId){
 		Session session = factory.openSession();
 		Transaction tx = null;
-		List assets = null;
+		List allStatus = null;
 		try {
 			tx = session.beginTransaction();
-			assets = session.createQuery("FROM Asset").list();
+			allStatus = session.createQuery("FROM AssetStatus").list();
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx!=null) tx.rollback();
@@ -93,6 +70,6 @@ public class AssetDAO {
 		} finally {
 			session.close();
 		}
-		return assets;
+		return allStatus;
 	}
 }

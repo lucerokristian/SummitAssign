@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="project.RepairInfo" table="repair_info">
+      <meta attribute="class-description">
+         This class contains the asset details; 
+      </meta>
+      <id name="id" type="int" column="id">
+         <generator class="native"/>
+      </id>
+      <property name="type" column="type" type="int"/>
+      <property name="ticketNumber" column="ticket_number" type="string"/>
+      <property name="ticketDate" column="ticket_date" type="date"/>
+      <property name="comments" column="comments" type="string"/>
+      <property name="assetStatusId" column="asset_status_id" type="int"/>
+   </class>
+</hibernate-mapping>

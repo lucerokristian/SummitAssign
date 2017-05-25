@@ -1,11 +1,11 @@
 package project;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Asset implements Serializable {
 	private String branch;
 	private String assetTag;
-	private int currentStatus; //1 - Active, 2 - Inactive, 3 - Repair
 	private String assetType;
 	private String model;
 	private String serialNumber;
@@ -16,13 +16,12 @@ public class Asset implements Serializable {
 	private String roomNumber;
 	private boolean softwareOS;
 	private String description;
-	private int account_id;
+	private Date scanDate;
 	
 	public Asset(){}
-	public Asset(String branch, String assetTag, int currentStatus, String assetType){
+	public Asset(String branch, String assetTag, String assetType){
 		this.branch = branch;
 		this.assetTag = assetTag;
-		this.currentStatus = currentStatus;
 		this.assetType = assetType;
 	}
 	
@@ -38,11 +37,11 @@ public class Asset implements Serializable {
 	public void setAssetTag(String assetTag) {
 		this.assetTag = assetTag;
 	}
-	public int getCurrentStatus() {
-		return currentStatus;
+	public Date getScanDate() {
+		return scanDate;
 	}
-	public void setCurrentStatus(int currentStatus) {
-		this.currentStatus = currentStatus;
+	public void setScanDate(Date scanDate) {
+		this.scanDate = scanDate;
 	}
 	public String getAssetType() {
 		return assetType;
@@ -104,10 +103,5 @@ public class Asset implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public int getAccount_id() {
-		return account_id;
-	}
-	public void setAccount_id(int account_id) {
-		this.account_id = account_id;
-	}
+
 }

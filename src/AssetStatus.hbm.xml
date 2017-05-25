@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="project.AssetStatus" table="asset_status">
+      <meta attribute="class-description">
+         This class contains the asset details; 
+      </meta>
+      <id name="id" type="int" column="id">
+         <generator class="native"/>
+      </id>
+      <property name="status" column="status" type="int"/>
+      <property name="userId" column="user_id" type="int"/>
+      <property name="assetId" column="asset_id" type="int"/>
+   </class>
+</hibernate-mapping>

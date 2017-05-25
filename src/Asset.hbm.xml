@@ -12,9 +12,8 @@
          <generator class="native"/>
       </id>
       <property name="branch" column="branch" type="string"/>
-      <property name="assetTag" column="assetTag" type="string"/>
-      <property name="currentStatus" column="currentStatus" type="int"/>
-      <property name="assetType" column="assetType" type="string"/>
+      <property name="assetTag" column="asset_tag" type="string"/>
+      <property name="assetType" column="asset_type" type="string"/>
       <property name="model" column="model" type="string"/>
       <property name="serialNumber" column="serialNumber" type="string"/>
       <property name="purchaseOrder" column="purchaseOrder" type="string"/>

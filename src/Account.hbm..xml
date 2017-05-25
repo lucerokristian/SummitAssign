@@ -13,9 +13,9 @@
       </id>
       <property name="username" column="username" type="string"/>
       <property name="password" column="password" type="string"/>
-      <property name="isAdmin" column="isAdmin" type="boolean"/>
-      <property name="fname" column="fname" type="string"/>
-      <property name="lname" column="lname" type="string"/>
+      <property name="isAdmin" column="is_admin" type="boolean"/>
+      <property name="firstName" column="first_name" type="string"/>
+      <property name="lastName" column="last_name" type="string"/>
       <property name="email" column="email" type="string"/>
    </class>
 </hibernate-mapping>

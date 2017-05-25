@@ -21,7 +21,7 @@ public class AccountDAO {
 	}
 	//validate if username and password match : pass Strings username and password
 	public boolean validate(String username, String password){
-		Session session = openSession();
+		Session session = factory.openSession();
 		Transaction tx = null;
 		boolean flag = false;
 		try {
@@ -46,7 +46,7 @@ public class AccountDAO {
 
 	//check if username is taken. Returns FALSE if it's TAKEN : pass String username
 	public boolean checkUsername(String username){
-		Session session = openSession();
+		Session session = factory.openSession();
 		Transaction tx = null;
 		boolean flag = true;
 		try {
@@ -71,7 +71,7 @@ public class AccountDAO {
 	
 	//check if the user is admin or not : pass String username
 	public boolean isAdmin(String username){
-		Session session = openSession();
+		Session session = factory.openSession();
 		Transaction tx = null;
 		boolean flag = false;
 		try{
@@ -90,7 +90,7 @@ public class AccountDAO {
 	}
 	
 	public List getAllUsers(){
-		Session session = openSession();
+		Session session = factory.openSession();
 		Transaction tx = null;
 		List users = null;
 		try {
@@ -108,7 +108,7 @@ public class AccountDAO {
 	
 	//get email : pass String username
 	public String getEmail(String username){
-		Session session = openSession();
+		Session session = factory.openSession();
 		Transaction tx = null;
 		String email = null;
 		try{
@@ -127,7 +127,7 @@ public class AccountDAO {
 	}
 	
 	public String getPassword(String username){
-		Session session = openSession();
+		Session session = factory.openSession();
 		Transaction tx = null;
 		String password = null;
 		try{
@@ -146,13 +146,13 @@ public class AccountDAO {
 	}
 	
 	public String getFname(String username){
-		Session session = openSession();
+		Session session = factory.openSession();
 		Transaction tx = null;
 		String fname = null;
 		try{
 			tx = session.beginTransaction();
 	        Account account = (Account) session.get(Account.class, username);
-	        fname = account.getFname();
+	        fname = account.getFirstName();
 	        tx.commit();
 	      }catch (HibernateException e) {
 	         if (tx!=null) tx.rollback();
@@ -164,13 +164,13 @@ public class AccountDAO {
 	}
 	
 	public String getLname(String username){
-		Session session = openSession();
+		Session session = factory.openSession();
 		Transaction tx = null;
 		String fname = null;
 		try{
 			tx = session.beginTransaction();
 	        Account account = (Account) session.get(Account.class, username);
-	        fname = account.getLname();
+	        fname = account.getLastName();
 	        tx.commit();
 	      }catch (HibernateException e) {
 	         if (tx!=null) tx.rollback();
@@ -182,28 +182,28 @@ public class AccountDAO {
 	}
 	
 	//update email AND/OR password of account by username
-	public void updateAccount(String username, String password, String email){
+//	public void updatet(String username, String password, String email){
+//		Session session = factory.openSession();
+//		Transaction tx = null;
+//		try{
+//			tx = session.beginTransaction();
+//	        Account account = (Account) session.get(Account.class, username);
+//	        if(password != null)
+//	        	account.setPassword(password);
+//	        if(email != null)
+//	        	account.setEmail(email);
+//	        session.update(account);
+//	        tx.commit();
+//	      }catch (HibernateException e) {
+//	         if (tx!=null) tx.rollback();
+//	         e.printStackTrace(); 
+//	      }finally {
+//	         session.close(); 
+//	      }
+//	}
+//	
+	public void delete(String username){
 		Session session = factory.openSession();
-		Transaction tx = null;
-		try{
-			tx = session.beginTransaction();
-	        Account account = (Account) session.get(Account.class, username);
-	        if(password != null)
-	        	account.setPassword(password);
-	        if(email != null)
-	        	account.setEmail(email);
-	        session.update(account);
-	        tx.commit();
-	      }catch (HibernateException e) {
-	         if (tx!=null) tx.rollback();
-	         e.printStackTrace(); 
-	      }finally {
-	         session.close(); 
-	      }
-	}
-	
-	public void deleteAccount(String username){
-		Session session = openSession();
 		Transaction tx = null;
 		try{
 			tx = session.beginTransaction();
@@ -219,8 +219,8 @@ public class AccountDAO {
 	}
 	
 	//add a new account with required fields and return the primary key;
-	public int addAccount(String username, String password, boolean isAdmin, String fname, String lname, String email){
-		Session session = openSession();
+	public int add(String username, String password, boolean isAdmin, String fname, String lname, String email){
+		Session session = factory.openSession();
 		Transaction tx = null;
 		int primaryKey = 0;
 		try{
@@ -237,7 +237,21 @@ public class AccountDAO {
 		return primaryKey;
 	}
 	
-	public static Session openSession(){
-		return factory.openSession();
+	//retrieve all the users as List
+	public List retrieve(){
+		Session session = factory.openSession();
+		Transaction tx = null;
+		List users = null;
+		try {
+			tx = session.beginTransaction();
+			users = session.createQuery("FROM Account").list();
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx!=null) tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return users;
 	}
 }

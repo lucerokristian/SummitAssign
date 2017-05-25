@@ -1,6 +1,6 @@
 package project;
 
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -9,7 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-public class AssetDAO {
+public class RepairInfoDAO {
 	private static SessionFactory factory;
 	static{
 		try{
@@ -19,39 +19,16 @@ public class AssetDAO {
 	        throw new ExceptionInInitializerError(ex); 
 	    }
 	}
-	//check if assetTag already exists, return FALSE if it already EXISTS.
-	public boolean checkAssetTag(String assetTag){
-		Session session = factory.openSession();
-		Transaction tx = null;
-		boolean flag = true;
-		try {
-			tx = session.beginTransaction();
-			List records = session.createQuery("FROM Asset").list();
-			for(Iterator iterator = records.iterator(); iterator.hasNext();){
-				Asset asset = (Asset) iterator.next();
-				if(asset.getAssetTag().equals(assetTag)){
-					flag = false;
-					break;
-				}
-			}
-			tx.commit();
-		} catch (HibernateException e) {
-			if (tx!=null) tx.rollback();
-			e.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return flag;
-	}
 	
-	public int add(String branch, String assetTag, String assetType){
+	//add repair info for asset
+	public int add(int type, String ticketNumber, Date ticketDate, String comments, int assetStatusId){
 		Session session = factory.openSession();
 		Transaction tx = null;
 		int primaryKey = 0;
 		try{
 			tx = session.beginTransaction();
-	        Asset asset = new Asset(branch, assetTag, assetType);
-	        primaryKey = (int) session.save(asset); //save() returns primary key of the inserted record
+	        RepairInfo repairInfo = new RepairInfo(type, ticketNumber, ticketDate, comments, assetStatusId);
+	        primaryKey = (int) session.save(repairInfo); //save() returns primary key of the inserted record
 	        tx.commit();
 	      }catch (HibernateException e) {
 	         if (tx!=null) tx.rollback();
@@ -61,14 +38,15 @@ public class AssetDAO {
 	      }
 		return primaryKey;
 	}
-
-	public void delete(String assetTag){
+	
+	//delete by assetStatusId
+	public void delete(int assetStatusId){
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try{
 			tx = session.beginTransaction();
-	        Asset asset = (Asset) session.get(Asset.class, assetTag);
-	        session.delete(asset); 
+	        RepairInfo repairInfo = (RepairInfo) session.get(RepairInfo.class, assetStatusId);
+	        session.delete(repairInfo); 
 	        tx.commit();
 	      }catch (HibernateException e) {
 	         if (tx!=null) tx.rollback();
@@ -78,14 +56,14 @@ public class AssetDAO {
 	      }
 	}
 	
-	//return all the assets as List
-	public List retrieve(){
+	//retrieve and return all the repair information as list
+	public List retrieve(int assetStatusId){
 		Session session = factory.openSession();
 		Transaction tx = null;
-		List assets = null;
+		List repairInfo = null;
 		try {
 			tx = session.beginTransaction();
-			assets = session.createQuery("FROM Asset").list();
+			repairInfo = session.createQuery("FROM RepairInfo").list();
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx!=null) tx.rollback();
@@ -93,6 +71,6 @@ public class AssetDAO {
 		} finally {
 			session.close();
 		}
-		return assets;
+		return repairInfo;
 	}
 }
