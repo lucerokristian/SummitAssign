@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="project.Asset" table="asset">
+      <meta attribute="class-description">
+         This class contains the asset details; 
+      </meta>
+      <id name="id" type="int" column="id">
+         <generator class="native"/>
+      </id>
+      <property name="branch" column="branch" type="string"/>
+      <property name="assetTag" column="assetTag" type="string"/>
+      <property name="currentStatus" column="currentStatus" type="int"/>
+      <property name="assetType" column="assetType" type="string"/>
+      <property name="model" column="model" type="string"/>
+      <property name="serialNumber" column="serialNumber" type="string"/>
+      <property name="purchaseOrder" column="purchaseOrder" type="string"/>
+      <property name="unitCost" column="unitCost" type="string"/>
+      <property name="location" column="location" type="string"/>
+      <property name="building" column="building" type="string"/>
+      <property name="roomNumber" column="roomNumber" type="string"/>
+      <property name="softwareOS" column="softwareOS" type="boolean"/>
+      <property name="description" column="description" type="string"/>
+      <property name="account_id" column="account_id" type="int"/>
+   </class>
+</hibernate-mapping>
