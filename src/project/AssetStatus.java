@@ -1,6 +1,8 @@
 package project;
 
-public class AssetStatus {
+import java.io.Serializable;
+
+public class AssetStatus implements Serializable{
 	private int status; //1-active, 2-inactive, 3-repair
 	private int userId;
 	private int assetId;
