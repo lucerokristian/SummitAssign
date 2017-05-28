@@ -1,5 +1,6 @@
 package project;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -10,17 +11,36 @@ import org.hibernate.cfg.Configuration;
 
 public class AssetStatusDAO {
 	private static SessionFactory factory;
-	static{
-		try{
-			factory = new Configuration().configure().buildSessionFactory();
-	    }catch (Throwable ex) { 
-	        System.err.println("Failed to create sessionFactory object." + ex);
-	        throw new ExceptionInInitializerError(ex); 
-	    }
+	
+	//get primary key from asset_status table using the foreign key "asset_id";
+	public int getId(int assetId){
+		configureFactory();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		int id = 0;
+		try {
+			tx = session.beginTransaction();
+			List records = session.createQuery("FROM AssetStatus").list();
+			for(Iterator iterator = records.iterator(); iterator.hasNext();){
+				AssetStatus assetStatus = (AssetStatus) iterator.next();
+				if(assetStatus.getAssetId() == assetId){
+					id = assetStatus.getId();
+					break;
+				}
+			}
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx!=null) tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return id;
 	}
 	
 	//add status information for an asset
 	public int add(int status, int userId, int assetId){
+		configureFactory();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		int primaryKey = 0;
@@ -40,6 +60,7 @@ public class AssetStatusDAO {
 	
 	//delete by asset id
 	public void delete(int assetId){
+		configureFactory();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try{
@@ -57,6 +78,7 @@ public class AssetStatusDAO {
 	
 	//retrieve and return all the asset status as List
 	public List retrieve(int assetId){
+		configureFactory();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		List allStatus = null;
@@ -71,5 +93,14 @@ public class AssetStatusDAO {
 			session.close();
 		}
 		return allStatus;
+	}
+	
+	public void configureFactory(){
+		try{
+			factory = new Configuration().configure().buildSessionFactory();
+	    }catch (Throwable ex) { 
+	        System.err.println("Failed to create sessionFactory object." + ex);
+	        throw new ExceptionInInitializerError(ex); 
+	    }
 	}
 }

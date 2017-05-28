@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Asset implements Serializable {
+	private int id;
 	private String branch;
 	private String assetTag;
 	private String assetType;
@@ -25,6 +26,12 @@ public class Asset implements Serializable {
 		this.assetType = assetType;
 	}
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getBranch() {
 		return branch;
 	}

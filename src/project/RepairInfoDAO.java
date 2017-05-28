@@ -1,6 +1,7 @@
 package project;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -11,23 +12,43 @@ import org.hibernate.cfg.Configuration;
 
 public class RepairInfoDAO {
 	private static SessionFactory factory;
-	static{
-		try{
-			factory = new Configuration().configure().buildSessionFactory();
-	    }catch (Throwable ex) { 
-	        System.err.println("Failed to create sessionFactory object." + ex);
-	        throw new ExceptionInInitializerError(ex); 
-	    }
+	
+	//get primary key from repair_info table using the data from column "asset_status_id";
+	public int getId(int assetStatusId){
+		configureFactory();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		int id = 0;
+		try {
+			tx = session.beginTransaction();
+			List records = session.createQuery("FROM RepairInfo").list();
+			for(Iterator iterator = records.iterator(); iterator.hasNext();){
+				RepairInfo repairInfo = (RepairInfo) iterator.next();
+				if(repairInfo.getAssetStatusId() == assetStatusId){
+					id = repairInfo.getId();
+					break;
+				}
+			}
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx!=null) tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return id;
 	}
 	
+	
 	//add repair info for asset
-	public int add(int type, String ticketNumber, Date ticketDate, String comments, int assetStatusId){
+	public int add(String repairCompany, int type, String ticketNumber, Date ticketDate, String comments, int assetStatusId){
+		configureFactory();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		int primaryKey = 0;
 		try{
 			tx = session.beginTransaction();
-	        RepairInfo repairInfo = new RepairInfo(type, ticketNumber, ticketDate, comments, assetStatusId);
+	        RepairInfo repairInfo = new RepairInfo(repairCompany, type, ticketNumber, ticketDate, comments, assetStatusId);
 	        primaryKey = (int) session.save(repairInfo); //save() returns primary key of the inserted record
 	        tx.commit();
 	      }catch (HibernateException e) {
@@ -41,6 +62,7 @@ public class RepairInfoDAO {
 	
 	//delete by assetStatusId
 	public void delete(int assetStatusId){
+		configureFactory();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try{
@@ -58,6 +80,7 @@ public class RepairInfoDAO {
 	
 	//retrieve and return all the repair information as list
 	public List retrieve(int assetStatusId){
+		configureFactory();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		List repairInfo = null;
@@ -72,5 +95,14 @@ public class RepairInfoDAO {
 			session.close();
 		}
 		return repairInfo;
+	}
+	
+	public void configureFactory(){
+		try{
+			factory = new Configuration().configure().buildSessionFactory();
+	    }catch (Throwable ex) { 
+	        System.err.println("Failed to create sessionFactory object." + ex);
+	        throw new ExceptionInInitializerError(ex); 
+	    }
 	}
 }

@@ -3,6 +3,7 @@ package project;
 import java.io.Serializable;
 
 public class AssetStatus implements Serializable{
+	private int id;
 	private int status; //1-active, 2-inactive, 3-repair
 	private int userId;
 	private int assetId;
@@ -11,6 +12,12 @@ public class AssetStatus implements Serializable{
 		this.status = status;
 		this.userId = userId;
 		this.assetId = assetId;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	public int getStatus() {
 		return status;
