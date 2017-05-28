@@ -6,7 +6,7 @@
 <hibernate-mapping>
    <class name="project.RepairInfo" table="repair_info">
       <meta attribute="class-description">
-         This class contains the asset details; 
+         This class contains the repair info 
       </meta>
       <id name="id" type="int" column="id">
          <generator class="native"/>

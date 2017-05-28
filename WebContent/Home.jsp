@@ -31,10 +31,11 @@
 <!-- DOC: Apply "page-header-menu-fixed" class to set the mega menu fixed  -->
 <!-- DOC: Apply "page-header-top-fixed" class to set the top menu fixed  -->
 <body class="page-md">
-<div id="header"></div>
+<%@include file="Header.jsp"%>
 
 <!-- BEGIN PAGE CONTAINER -->
-<div class="page-container">
+<div class="page-container" style="background-color:whitesmoke">
+	
 	<!-- BEGIN PAGE HEAD -->
 	<div class="page-head">
 		<div class="container">
@@ -47,7 +48,7 @@
 	</div>
 	<!-- END PAGE HEAD -->
 	<!-- BEGIN PAGE CONTENT -->
-		<div class="container">
+		<div class="container" style="margin-top:1%">
 			<!-- BEGIN PAGE CONTENT INNER -->
 			<div class="row">
 				<div class="col-md-12">
@@ -249,7 +250,7 @@
 	<!-- END PAGE CONTENT -->
 <!-- END PAGE CONTAINER -->
 
-<div id="footer"></div>
+<%@include file="Footer.jsp"%>
 
 <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
@@ -283,8 +284,7 @@ jQuery(document).ready(function() {
     
    	ChartsFlotcharts.initBarCharts();
 
-	$("#header").load("Header.html");
-	$("#footer").load("Footer.html");
+   	
 });
 
 </script>

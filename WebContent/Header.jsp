@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!-- BEGIN HEADER -->
 <div class="page-header">
 	<!-- BEGIN HEADER TOP -->
@@ -15,8 +17,13 @@
 						<span class="separator"></span>
 					</li>
 					<li>
-						<label>System Administrator</label><br>
-						<label>User: Kristian Lucero</label>
+						<text id="fullName"><% out.println(session.getAttribute("firstName") + " " + session.getAttribute("lastName")); %></text><br>
+						<text id="role">Role: <% 
+							if((session.getAttribute("isAdmin")).equals(true))
+								out.println("System Administrator");
+							else
+								out.println("Authorized User");
+						%> </text>
 					</li>
 				</ul>
 			</div>

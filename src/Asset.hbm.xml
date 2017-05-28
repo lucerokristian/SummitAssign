@@ -23,6 +23,6 @@
       <property name="roomNumber" column="room_number" type="string"/>
       <property name="softwareOS" column="software_os" type="boolean"/>
       <property name="description" column="description" type="string"/>
-      <property name="scanDate" column="scan_date" type="Date"/>
+      <property name="scanDate" column="scan_date" type="date"/>
    </class>
 </hibernate-mapping>

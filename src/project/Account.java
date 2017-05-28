@@ -3,6 +3,7 @@ package project;
 import java.io.Serializable;
 
 public class Account implements Serializable{
+	private int id;
 	private String username;
 	private String password;
 	private boolean isAdmin;
@@ -19,6 +20,15 @@ public class Account implements Serializable{
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+	}
+	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public String getUsername(){
