@@ -1,3 +1,7 @@
+<%@ page import="project.AssetDAO" %>
+<%@ page import="project.Asset" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="en">
 <!--<![endif]-->
@@ -32,7 +36,16 @@
 <!-- DOC: Apply "page-header-top-fixed" class to set the top menu fixed  -->
 <body class="page-md">
 <%@include file="Header.jsp"%>
-
+<%
+AssetDAO assetDAO = new AssetDAO();
+List active = null; List inactive = null; List repair = null;
+active = assetDAO.retrieveByStatus(1);
+inactive = assetDAO.retrieveByStatus(2);
+repair = assetDAO.retrieveByStatus(3);
+%>
+<label style="display:none" id="active" value="<%= active.size() %>"><%= active.size() %></label>
+<label style="display:none" id="inactive" value="<%= inactive.size() %>"><%= inactive.size() %></label>
+<label style="display:none" id="repair" value="<%= repair.size() %>"><%= repair.size() %></label>
 <!-- BEGIN PAGE CONTAINER -->
 <div class="page-container" style="background-color:whitesmoke">
 	
@@ -63,10 +76,33 @@
 							<div class="portlet-body">
 								<div id="chart_1_1_legendPlaceholder">
 								</div>
-								<div id="chart_1_1" class="chart">
+								<div id="assetsChart" class="chart">
 								</div>
 							</div>
 						</div>
+						<form class="form-horizontal" role="form" action="FilterTable.jsp" method="POST">
+							<div class="form-body">
+								<div class="form-group">
+									<label class="col-md-3 control-label">Filter: </label>
+									<div class="col-md-9">
+										<select class="form-control" name="status" required>
+											<option disabled selected value> -- Select an option -- </option>
+											<option value="1">Active</option>
+											<option value="2">Inactive</option>
+											<option value="3">Repair</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-actions">
+									<div class="row">
+										<div class="col-md-offset-3 col-md-9">
+											<button type="submit" class="btn blue">Filter</button>
+										</div>
+									</div>
+								</div><br>
+							</div>
+						</form>
+						<br>
 						<!-- END BASIC CHART PORTLET-->
 					 </div>
 					 <div class="col-md-6">
@@ -81,93 +117,59 @@
 								<div class="table-scrollable">
 									<table class="table table-hover">
 									<thead>
-									<tr>
-										<th>
-											 Asset Tag
-										</th>
-										<th>
-											 Model
-										</th>
-										<th>
-											 Type
-										</th>
-										<th>
-											 Serial #
-										</th>
-										<th>
-											 Purchase Order #
-										</th>
-									</tr>
+										<tr>
+											<th>
+												 Asset Tag
+											</th>
+											<th>
+												 Model
+											</th>
+											<th>
+												 Type
+											</th>
+											<th>
+												 Serial #
+											</th>
+											<th>
+												 Purchase Order #
+											</th>
+										</tr>
 									</thead>
 									<tbody>
-									<tr>
-										<td>
-											 51002
-										</td>
-										<td>
-											RX-92312
-										</td>
-										<td>
-											 Dell Monitor
-										</td>
-										<td>
-											 L87651
-										</td>
-										<td>
-											
-										</td>
-									</tr>
-									<tr>
-										<td>
-											 51343
-										</td>
-										<td>
-											 LZ-123123
-										</td>
-										<td>
-											 Speakers
-										</td>
-										<td>
-											 X123123
-										</td>
-										<td>
-											
-										</td>
-									</tr>
-									<tr>
-										<td>
-											 51588
-										</td>
-										<td>
-											 RD-12315
-										</td>
-										<td>
-											 Headphones
-										</td>
-										<td>
-											 B12312
-										</td>
-										<td>
-											132423
-										</td>
-									</tr>
-									<tr>
-										<td>
-											 51123
-										</td>
-										<td>
-											 RD-43212
-										</td>
-										<td>
-											 Amplifier
-										</td>
-										<td>
-											 L321312
-										</td>
-										<td>
-											523452
-										</td>
-									</tr>
+									<%
+										List assetList = null;
+										List assetListSecond = null;
+										if(request.getParameter("status") == null){
+											assetList = assetDAO.retrieveByStatus(1);
+											assetListSecond = assetDAO.retrieveNoDuplicate(1);
+										}
+										else{
+											assetList = assetDAO.retrieveByStatus(Integer.parseInt(request.getParameter("status")));
+											assetListSecond = assetDAO.retrieveNoDuplicate(Integer.parseInt(request.getParameter("status")));
+										}
+										for(Iterator iterator = assetList.iterator(); iterator.hasNext(); ){
+											Asset asset = (Asset) iterator.next();
+									%>
+										<tr>
+											<td>
+												 <%= asset.getAssetTag() %>
+											</td>
+											<td>
+												<%= asset.getModel() %>
+											</td>
+											<td>
+												<%= asset.getAssetType() %>
+											</td>
+											<td>
+												 <%= asset.getSerialNumber() %>
+											</td>
+											<td>
+												<%= asset.getPurchaseOrder() %>
+											</td>
+										</tr>
+									<%
+										}
+									%>
 									</tbody>
 									</table>
 								</div>
@@ -177,69 +179,31 @@
 					 </div>
 					 <div class="col-md-3">
 					 	<!-- BEGIN Portlet PORTLET-->
-						<div class="portlet box green-meadow">
-							<div class="portlet-title">
-								<div class="caption">
-									Dell Monitor
+					 	<%
+					 		String color[] = {"green-meadow", "red-sunglo", "blue-madison", "yellow-crusta"};
+					 		int i = 0;
+							for(Iterator iterator = assetListSecond.iterator(); iterator.hasNext();){
+								Asset asset = (Asset) iterator.next();
+					 	%>
+							<div class="portlet box <%= color[i++] %>">
+								<div class="portlet-title">
+									<div class="caption">
+										<%= asset.getAssetType() %>
+									</div>
+									<div class="tools">
+										<a href="javascript:;" class="collapse">
+										</a>
+									</div>
+									
 								</div>
-								<div class="tools">
-									<a href="javascript:;" class="collapse">
-									</a>
+								<div class="portlet-body">
+									 Total: <%= assetDAO.getAssetCount(asset.getAssetType()) %> <br> Assigned: <%= assetDAO.getAssetAssigned(asset.getAssetType()) %>
 								</div>
-								
 							</div>
-							<div class="portlet-body">
-								 Total: 1 <br> Assigned: 0
-							</div>
-						</div>
-						<!-- END Portlet PORTLET-->
-						<div class="portlet box yellow-crusta">
-							<div class="portlet-title">
-								<div class="caption">
-									Speakers
-								</div>
-								<div class="tools">
-									<a href="javascript:;" class="collapse">
-									</a>
-								</div>
-								
-							</div>
-							<div class="portlet-body">
-								 Total: 1 <br> Assigned: 0
-							</div>
-						</div>
-						<!-- END Portlet PORTLET-->
-						<div class="portlet box red-sunglo">
-							<div class="portlet-title">
-								<div class="caption">
-									Headphones
-								</div>
-								<div class="tools">
-									<a href="javascript:;" class="collapse">
-									</a>
-								</div>
-								
-							</div>
-							<div class="portlet-body">
-								 Total: 1 <br> Assigned: 0
-							</div>
-						</div>
-						<!-- END Portlet PORTLET-->
-						<div class="portlet box blue-madison">
-							<div class="portlet-title">
-								<div class="caption">
-									Amplifier
-								</div>
-								<div class="tools">
-									<a href="javascript:;" class="collapse">
-									</a>
-								</div>
-								
-							</div>
-							<div class="portlet-body">
-								 Total: 1 <br> Assigned: 0
-							</div>
-						</div>
+						<%
+						if(i == 4)
+							i = 0;
+						} %>
 						<!-- END Portlet PORTLET-->
 					 </div>
 				</div>
@@ -281,10 +245,56 @@ jQuery(document).ready(function() {
     Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	Demo.init(); // init demo features
-    
-   	ChartsFlotcharts.initBarCharts();
+	 	
+});
 
-   	
+$(document).ready(function(){
+	function barChart(){
+		var data = GenerateSeries(0);
+	    function GenerateSeries(added) {
+	        var data = [];
+	        data.push([0, $('#active').text()]);
+	        data.push([1, $('#inactive').text()]);
+	        data.push([2, $('#repair').text()]);
+	        return data;
+	    }
+	
+	    var options = {
+	        series: {
+	            bars: {
+	                show: true
+	            }
+	        },
+	        bars: {
+	            barWidth: 0.8,
+	            lineWidth: 0, // in pixels
+	            shadowSize: 0,
+	            align: 'center'
+	        },
+	        
+	        xaxis: {
+	        	ticks: [[0,"Active"],[1,"Inactive"],[2,"Repair"]]
+	        },
+	        
+	        grid: {
+	            tickColor: "#eee",
+	            borderColor: "#eee",
+	            borderWidth: 1
+	        }
+	    };
+	
+	    if ($('#assetsChart').size() !== 0) {
+	        $.plot($("#assetsChart"), [{
+	            data: data,
+	            lines: {
+	                lineWidth: 1,
+	            },
+	            shadowSize: 0
+	        }], options);
+	    }
+	}
+
+	barChart();
 });
 
 </script>

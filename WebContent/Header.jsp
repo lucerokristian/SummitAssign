@@ -40,12 +40,12 @@
 			<div class="hor-menu ">
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="Home.html">
+						<a href="Home.jsp">
 							<i class="fa fa-bank"></i>Home
 						</a>
 					</li>
 					<li>
-						<a href="AssetEntry.html">
+						<a href="AssetEntry.jsp">
 							<i class="fa fa-pencil-square-o"></i>Asset Entry
 						</a>
 					</li>

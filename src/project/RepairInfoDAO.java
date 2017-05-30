@@ -12,10 +12,17 @@ import org.hibernate.cfg.Configuration;
 
 public class RepairInfoDAO {
 	private static SessionFactory factory;
+	static{
+		try{
+			factory = new Configuration().configure().buildSessionFactory();
+	    }catch (Throwable ex) { 
+	        System.err.println("Failed to create sessionFactory object." + ex);
+	        throw new ExceptionInInitializerError(ex); 
+	    }
+	}
 	
 	//get primary key from repair_info table using the data from column "asset_status_id";
 	public int getId(int assetStatusId){
-		configureFactory();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		int id = 0;
@@ -42,7 +49,6 @@ public class RepairInfoDAO {
 	
 	//add repair info for asset
 	public int add(String repairCompany, int type, String ticketNumber, Date ticketDate, String comments, int assetStatusId){
-		configureFactory();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		int primaryKey = 0;
@@ -62,7 +68,6 @@ public class RepairInfoDAO {
 	
 	//delete by assetStatusId
 	public void delete(int assetStatusId){
-		configureFactory();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try{
@@ -80,7 +85,6 @@ public class RepairInfoDAO {
 	
 	//retrieve and return all the repair information as list
 	public List retrieve(int assetStatusId){
-		configureFactory();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		List repairInfo = null;
@@ -95,14 +99,5 @@ public class RepairInfoDAO {
 			session.close();
 		}
 		return repairInfo;
-	}
-	
-	public void configureFactory(){
-		try{
-			factory = new Configuration().configure().buildSessionFactory();
-	    }catch (Throwable ex) { 
-	        System.err.println("Failed to create sessionFactory object." + ex);
-	        throw new ExceptionInInitializerError(ex); 
-	    }
 	}
 }

@@ -18,10 +18,16 @@ import org.hibernate.cfg.Configuration;
 
 public class AccountDAO {
 	private static SessionFactory factory;
-	
+	static{
+		try{
+			factory = new Configuration().configure().buildSessionFactory();
+	    }catch (Throwable ex) { 
+	        System.err.println("Failed to create sessionFactory object." + ex);
+	        throw new ExceptionInInitializerError(ex); 
+	    }
+	}
 	//validate if username and password match : pass Strings username and password
-	public boolean validate(String username, String password){
-		configureFactory();
+	public boolean validate(String username, String password){		
 		Session session = factory.openSession();
 		Transaction tx = null;
 		boolean flag = false;
@@ -46,7 +52,7 @@ public class AccountDAO {
 	} 
 
 	//check if username is taken. Returns FALSE if it's TAKEN : pass String username
-	public boolean checkUsername(String username){
+	public boolean checkUsername(String username){		
 		Session session = factory.openSession();
 		Transaction tx = null;
 		boolean flag = true;
@@ -71,8 +77,7 @@ public class AccountDAO {
 	}
 	
 	//check if the user is admin or not : pass String username
-	public boolean isAdmin(int id){
-		configureFactory();
+	public boolean isAdmin(int id){		
 		Session session = factory.openSession();
 		Transaction tx = null;
 		boolean flag = false;
@@ -91,7 +96,7 @@ public class AccountDAO {
 		return flag;
 	}
 	
-	public List getAllUsers(){
+	public List getAllUsers(){		
 		Session session = factory.openSession();
 		Transaction tx = null;
 		List users = null;
@@ -108,8 +113,7 @@ public class AccountDAO {
 		return users;
 	}
 	
-	public int getId(String username){
-		configureFactory();
+	public int getId(String username){		
 		Session session = factory.openSession();
 		Transaction tx = null;
 		int id = 0;
@@ -133,7 +137,7 @@ public class AccountDAO {
 		return id;
 	}
 	//get email : pass String username
-	public static String getEmail(int id){
+	public static String getEmail(int id){		
 		Session session = factory.openSession();
 		Transaction tx = null;
 		String email = null;
@@ -171,8 +175,7 @@ public class AccountDAO {
 		return password;
 	}
 	
-	public String getFname(int id){
-		configureFactory();
+	public String getFname(int id){		
 		Session session = factory.openSession();
 		Transaction tx = null;
 		String fname = null;
@@ -190,8 +193,7 @@ public class AccountDAO {
 		return fname;
 	}
 	
-	public String getLname(int id){
-		configureFactory();
+	public String getLname(int id){		
 		Session session = factory.openSession();
 		Transaction tx = null;
 		String fname = null;
@@ -209,7 +211,7 @@ public class AccountDAO {
 		return fname;
 	}
 	
-	public void delete(int id){
+	public void delete(int id){		
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try{
@@ -226,7 +228,7 @@ public class AccountDAO {
 	}
 	
 	//add a new account with required fields and return the primary key;
-	public int add(String username, String password, boolean isAdmin, String fname, String lname, String email){
+	public int add(String username, String password, boolean isAdmin, String fname, String lname, String email){		
 		Session session = factory.openSession();
 		Transaction tx = null;
 		int primaryKey = 0;
@@ -245,7 +247,7 @@ public class AccountDAO {
 	}
 	
 	//retrieve all the users as List
-	public List retrieve(){
+	public List retrieve(){		
 		Session session = factory.openSession();
 		Transaction tx = null;
 		List users = null;
@@ -301,14 +303,5 @@ public class AccountDAO {
 //	         mex.printStackTrace();
 //	      }
 //	      return result;
-//	 }  
-	
-	public void configureFactory(){
-		try{
-			factory = new Configuration().configure().buildSessionFactory();
-	    }catch (Throwable ex) { 
-	        System.err.println("Failed to create sessionFactory object." + ex);
-	        throw new ExceptionInInitializerError(ex); 
-	    }
-	}
+//	 }
 }

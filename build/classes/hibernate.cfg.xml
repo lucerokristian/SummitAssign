@@ -21,6 +21,9 @@
 
    <!-- List of XML mapping files -->
    <mapping resource="Account.hbm.xml"/>
+   <mapping resource="Asset.hbm.xml"/>
+   <mapping resource="AssetAssigned.hbm.xml"/>
+   <mapping resource="RepairInfo.hbm.xml"/>
    
 
 </session-factory>

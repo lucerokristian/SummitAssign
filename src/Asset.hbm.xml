@@ -14,6 +14,7 @@
       <property name="branch" column="branch" type="string"/>
       <property name="assetTag" column="asset_tag" type="string"/>
       <property name="assetType" column="asset_type" type="string"/>
+      <property name="status" column="status" type="int"/>
       <property name="model" column="model" type="string"/>
       <property name="serialNumber" column="serial_number" type="string"/>
       <property name="purchaseOrder" column="purchase_order" type="string"/>
@@ -21,7 +22,7 @@
       <property name="location" column="location" type="string"/>
       <property name="building" column="building" type="string"/>
       <property name="roomNumber" column="room_number" type="string"/>
-      <property name="softwareOS" column="software_os" type="boolean"/>
+      <property name="softwareOs" column="software_os" type="boolean"/>
       <property name="description" column="description" type="string"/>
       <property name="scanDate" column="scan_date" type="date"/>
    </class>

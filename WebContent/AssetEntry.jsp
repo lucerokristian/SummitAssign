@@ -1,3 +1,9 @@
+<%@ page import="project.AssetDAO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="project.Asset" %>
+<%@ page import="project.AccountDAO" %>
+<%@ page import="project.Account" %>
 <!DOCTYPE html>
 <html lang="en">
 <!--<![endif]-->
@@ -31,7 +37,7 @@
 <!-- DOC: Apply "page-header-menu-fixed" class to set the mega menu fixed  -->
 <!-- DOC: Apply "page-header-top-fixed" class to set the top menu fixed  -->
 <body class="page-md">
-<div id="header"></div>
+<%@include file="Header.jsp"%>
 
 <!-- BEGIN PAGE CONTAINER -->
 <div class="page-container">
@@ -40,7 +46,7 @@
 		<div class="container">
 			<!-- BEGIN PAGE TITLE -->
 			<div class="page-title">
-				<h1>Home</h1>
+				<h1>Asset Entry</h1>
 			</div>
 			<!-- END PAGE TITLE -->
 		</div>
@@ -57,43 +63,43 @@
 					<div class="portlet light">
 						<div class="portlet-title">
 							<div class="caption">
-								<span class="caption-subject font-blue-sharp bold uppercase">Asset Entry</span>
+								<span class="caption-subject font-blue-sharp bold uppercase">Asset Details</span>
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form class="form-horizontal" role="form">
+							<form class="form-horizontal" role="form" action="AssetEntryValidation.jsp" method="POST">
 								<div class="form-body">
 									<div class="form-group">
 										<label class="col-md-3 control-label">Branch<span style="color:red"> *</span></label>
 										<div class="col-md-9">
-											<select class="form-control" required>
+											<select class="form-control" name="branch" required>
 												<option disabled selected value> -- Select an option -- </option>
-												<option>SummitWorks Technologies Inc</option>
-												<option>TekBasic LLC</option>
+												<option value="SummitWorks Technologies Inc.">SummitWorks Technologies Inc</option>
+												<option value="TekBasic LLC">TekBasic LLC</option>
 											</select>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-3 control-label">Asset Tag<span style="color:red"> *</span></label>
 										<div class="col-md-9">
-											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" required>
+											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" name="assetTag" required>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-3 control-label">Status<span style="color:red"> *</span></label>
 										<div class="col-md-9">
-											<select class="form-control" required>
+											<select class="form-control" name="status" required>
 												<option disabled selected value> -- Select an option -- </option>
-												<option>Active</option>
-												<option>Inactive</option>
-												<option>Repair</option>
+												<option value="1">Active</option>
+												<option value="2">Inactive</option>
+												<option value="3">Repair</option>
 											</select>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-3 control-label">Type<span style="color:red"> *</span></label>
 										<div class="col-md-9">
-											<select class="form-control" required>
+											<select class="form-control" name="assetType" required>
 												<option disabled selected value> -- Select an option -- </option>
 												<option>Headphones</option>
 												<option>Amplifier</option>
@@ -105,47 +111,63 @@
 									<div class="form-group">
 										<label class="col-md-3 control-label">Model</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control input-inline input-medium" placeholder="Model" >
+											<input type="text" class="form-control input-inline input-medium" placeholder="Model" name="model" >
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-3 control-label">Serial #</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" >
+											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" name="serialNumber" >
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-3 control-label">PO #</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" >
+											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" name="purchaseOrder" >
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-3 control-label">Unit Cost</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" >
+											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" name="unitCost" >
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-3 control-label">Location</label>
 										<div class="col-md-9">
-											<select class="form-control">
+											<select class="form-control" name="location">
 												<option disabled selected value> -- Select an option -- </option>
-												<option>South Plainfield, NJ</option>
-												<option>New Brunswick, NJ</option>
+												<option value="South Plainfield, NJ">South Plainfield, NJ</option>
+												<option value="New Brunswick, NJ">New Brunswick, NJ</option>
 											</select>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-3 control-label">Building</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" >
+											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" name="building" >
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-3 control-label">Room</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" >
+											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" name="roomNumber" >
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">Operating System</label>
+										<div class="col-md-9">
+											<select class="form-control" name="softwareOs">
+												<option disabled selected value> -- Select an option -- </option>
+												<option value="Yes">Yes</option>
+												<option value="No">No</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">Description</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" name="description" >
 										</div>
 									</div>
 									<div class="form-actions">
@@ -174,38 +196,42 @@
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form class="form-horizontal" role="form">
+									<form class="form-horizontal" role="form" action="AssetAssignment.jsp" method="POST">
 										<div class="form-body">
+										<div class="form-group">
+											<label class="col-md-3 control-label">Asset Tag<span style="color:red"> *</span></label>
+											<div class="col-md-9">
+												<select class="form-control" name="assetId" required>
+													<option disabled selected value> -- Select an option -- </option>
+													<%
+														AssetDAO assetDAO = new AssetDAO();
+														List assetList = assetDAO.retrieve();
+														for(Iterator iterator = assetList.iterator(); iterator.hasNext(); ){
+															Asset asset = (Asset) iterator.next();
+													%>
+															<option value="<%= asset.getId()%>"><%= asset.getAssetTag() %></option>
+													<%
+														}
+													%>
+												</select>
+											</div>
+										</div>
 											<div class="form-group">
 												<label class="col-md-3 control-label">Assign to<span style="color:red"> *</span></label>
 												<div class="col-md-9">
-													<select class="form-control" required>
+													<select class="form-control" name="userId" required>
 														<option disabled selected value> -- Select an option -- </option>
-														<option>Kristian Lucero</option>
-														<option>Sathvik Gamananeni</option>
+														<%
+														AccountDAO accountDAO = new AccountDAO();
+														List accountList = accountDAO.retrieve();
+														for(Iterator iterator = accountList.iterator(); iterator.hasNext(); ){
+															Account account = (Account) iterator.next();
+													%>
+															<option value="<%= account.getId() %>"><%= account.getFirstName() + " " + account.getLastName() %></option>
+													<%
+														}
+													%>
 													</select>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-md-3 control-label">Location</label>
-												<div class="col-md-9">
-													<select class="form-control">
-														<option disabled selected value> -- Select an option -- </option>
-														<option>South Plainfield, NJ</option>
-														<option>New Brunswick, NJ</option>
-													</select>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-md-3 control-label">Building</label>
-												<div class="col-md-9">
-													<input type="text" class="form-control input-inline input-medium" placeholder="Enter text">
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-md-3 control-label">Room</label>
-												<div class="col-md-9">
-													<input type="text" class="form-control input-inline input-medium" placeholder="Enter text">
 												</div>
 											</div>
 											<div class="form-actions">
@@ -275,7 +301,7 @@
 </div>
 <!-- END PAGE CONTAINER -->
 
-<div id="footer"></div>
+<%@include file="Footer.jsp"%>
 
 <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>

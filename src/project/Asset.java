@@ -7,6 +7,7 @@ public class Asset implements Serializable {
 	private int id;
 	private String branch;
 	private String assetTag;
+	private int status;
 	private String assetType;
 	private String model;
 	private String serialNumber;
@@ -15,22 +16,45 @@ public class Asset implements Serializable {
 	private String location;
 	private String building;
 	private String roomNumber;
-	private boolean softwareOS;
+	private boolean softwareOs;
 	private String description;
 	private Date scanDate;
 	
 	public Asset(){}
-	public Asset(String branch, String assetTag, String assetType){
+	public Asset(String branch, String assetTag, int status, String assetType){
 		this.branch = branch;
 		this.assetTag = assetTag;
+		this.status = status;
 		this.assetType = assetType;
 	}
 	
+	public Asset(String branch, String assetTag, int status, String assetType, String model, String serialNumber, String purchaseOrder, String unitCost, String location, String building, String roomNumber, boolean softwareOs, String description, Date scanDate){
+		this.branch = branch;
+		this.assetTag = assetTag;
+		this.status = status;
+		this.assetType = assetType;
+		this.model = model;
+		this.serialNumber = serialNumber;
+		this.purchaseOrder = purchaseOrder;
+		this.unitCost = unitCost;
+		this.location = location;
+		this.building = building;
+		this.roomNumber = roomNumber;
+		this.softwareOs = softwareOs;
+		this.description = description;
+		this.scanDate = scanDate;
+	}
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	public String getBranch() {
 		return branch;
@@ -98,11 +122,11 @@ public class Asset implements Serializable {
 	public void setRoomNumber(String roomNumber) {
 		this.roomNumber = roomNumber;
 	}
-	public boolean isSoftwareOS() {
-		return softwareOS;
+	public boolean isSoftwareOs() {
+		return softwareOs;
 	}
-	public void setSoftwareOS(boolean softwareOS) {
-		this.softwareOS = softwareOS;
+	public void setSoftwareOs(boolean softwareOs) {
+		this.softwareOs = softwareOs;
 	}
 	public String getDescription() {
 		return description;

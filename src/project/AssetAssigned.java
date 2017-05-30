@@ -2,14 +2,13 @@ package project;
 
 import java.io.Serializable;
 
-public class AssetStatus implements Serializable{
+public class AssetAssigned implements Serializable{
 	private int id;
-	private int status; //1-active, 2-inactive, 3-repair
 	private int userId;
 	private int assetId;
 	
-	public AssetStatus(int status, int userId, int assetId){
-		this.status = status;
+	public AssetAssigned(){}
+	public AssetAssigned(int userId, int assetId){
 		this.userId = userId;
 		this.assetId = assetId;
 	}
@@ -18,12 +17,6 @@ public class AssetStatus implements Serializable{
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
-	public int getStatus() {
-		return status;
-	}
-	public void setStatus(int status) {
-		this.status = status;
 	}
 	public int getUserId() {
 		return userId;
