@@ -94,7 +94,7 @@
 						</ul>
 					</li>
 					<li class="pull-right ">
-						<a href="Login.html">
+						<a href="Logout.jsp">
 							Logout
 						</a>
 					</li>

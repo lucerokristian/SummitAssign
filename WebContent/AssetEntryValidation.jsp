@@ -4,6 +4,7 @@
 <%@ page import="project.AssetAssigned" %>
 <%@ page import="project.AssetAssignedDAO" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="java.io.PrintWriter" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -12,6 +13,7 @@
 	</head>
 	<body>
 		<%
+		PrintWriter print = response.getWriter();
 	   	String branch = request.getParameter("branch");
 	   	String assetTag = request.getParameter("assetTag");
 	   	int status = Integer.parseInt(request.getParameter("status"));
@@ -37,13 +39,17 @@
 	   		int i = assetDAO.add(branch, assetTag, status, assetType, model, serialNumber, purchaseOrder, unitCost, location, building, roomNumber, bool, description, scanDate);
 	   		if(i > 0){ 
 	   			assetAssignedDAO.add(0, i); //insert row in asset_assigned table
+			   	print.println("<script type=\"text/javascript\">");
+				print.println("alert('Successfully added asset.');");
+				print.println("location='AssetEntry.jsp';");
+				print.println("</script>");
+	   		}else{	
+		   		print.println("<script type=\"text/javascript\">");
+				print.println("alert('There was a problem adding the asset.');");
+				print.println("location='AssetEntry.jsp';");
+				print.println("</script>");
+	   		}
+	   	}
 	   	%>
-	   			<script>alert("Successfully added asset.");</script>
-	   			<jsp:forward page="AssetEntry.jsp"/>
-	   	<%	}else{	%>
-	   		<script>alert("There was a problem adding the asset.");</script>
-	   		<jsp:include page="AssetEntry.jsp"/>
-	   	<%}
-	   	}%>
 	</body>
 </html>
