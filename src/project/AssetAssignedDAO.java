@@ -52,7 +52,7 @@ public class AssetAssignedDAO {
 		  try{
 		     tx = session.beginTransaction();
 		     AssetAssigned assetAssigned = (AssetAssigned) session.get(AssetAssigned.class, id); 
-		     assetAssigned.setUserId(1);
+		     assetAssigned.setUserId(userId);
 			 session.update(assetAssigned); 
 		     tx.commit();
 		  }catch (HibernateException e) {

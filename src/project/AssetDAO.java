@@ -157,7 +157,6 @@ public class AssetDAO {
 			session.close();
 		}
 		return assets;
-		
 	}
 	
 	public int getAssetCount(String assetType){

@@ -11,13 +11,20 @@ public class RepairInfo implements Serializable{
 	private Date ticketDate;
 	private String comments;
 	private int assetStatusId;
-	
+				
+	public RepairInfo(){
+		
+	}
 	public RepairInfo(String repairCompany, int type, String ticketNumber, Date ticketDate, String comments, int assetStatusId){
 		this.repairCompany = repairCompany;
 		this.type = type;
 		this.ticketNumber = ticketNumber;
 		this.ticketDate = ticketDate;
 		this.comments = comments;
+		this.assetStatusId = assetStatusId;
+	}
+	
+	public RepairInfo(int assetStatusId){
 		this.assetStatusId = assetStatusId;
 	}
 	public int getId() {

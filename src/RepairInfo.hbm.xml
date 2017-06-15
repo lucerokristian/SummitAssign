@@ -11,6 +11,7 @@
       <id name="id" type="int" column="id">
          <generator class="native"/>
       </id>
+      <property name="repairCompany" column="repair_company" type="string"/>
       <property name="type" column="type" type="int"/>
       <property name="ticketNumber" column="ticket_number" type="string"/>
       <property name="ticketDate" column="ticket_date" type="date"/>

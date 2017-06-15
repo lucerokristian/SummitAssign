@@ -35,7 +35,15 @@
 <!-- DOC: Apply "page-header-menu-fixed" class to set the mega menu fixed  -->
 <!-- DOC: Apply "page-header-top-fixed" class to set the top menu fixed  -->
 <body class="page-md">
+<%if(session == null || !request.isRequestedSessionIdValid()){%>
+	<jsp:forward page="Login.html"/>
+<%}else{
+	if((session.getAttribute("isAdmin")).equals(true)){ %>
 <%@include file="Header.jsp"%>
+<% }else{ %>
+<%@include file="HeaderAuthorizedUser.jsp"%>
+<% } 
+}%>
 <%
 AssetDAO assetDAO = new AssetDAO();
 List active = null; List inactive = null; List repair = null;
@@ -211,10 +219,10 @@ repair = assetDAO.retrieveByStatus(3);
 			<!-- END PAGE CONTENT INNER -->
 		</div>
 	</div>
+	<%@include file="Footer.jsp"%>
 	<!-- END PAGE CONTENT -->
 <!-- END PAGE CONTAINER -->
 
-<%@include file="Footer.jsp"%>
 
 <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
@@ -243,9 +251,8 @@ repair = assetDAO.retrieveByStatus(3);
 jQuery(document).ready(function() { 
 	// initiate layout and plugins
     Metronic.init(); // init metronic core components
-	Layout.init(); // init current layout
-	Demo.init(); // init demo features
-	 	
+	Layout.init(); //  init current layout
+	Demo.init(); // init demo features              	
 });
 
 $(document).ready(function(){
@@ -267,7 +274,7 @@ $(document).ready(function(){
 	        },
 	        bars: {
 	            barWidth: 0.8,
-	            lineWidth: 0, // in pixels
+	            lineWidth: 0, // in pimxels
 	            shadowSize: 0,
 	            align: 'center'
 	        },

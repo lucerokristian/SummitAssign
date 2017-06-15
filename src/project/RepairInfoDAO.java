@@ -66,6 +66,25 @@ public class RepairInfoDAO {
 		return primaryKey;
 	}
 	
+	//create row to be updated later by user
+	public int addRow(int assetStatusId){
+		Session session = factory.openSession();
+		Transaction tx = null;
+		int primaryKey = 0;
+		try{
+			tx = session.beginTransaction();
+	        RepairInfo repairInfo = new RepairInfo(assetStatusId);
+	        primaryKey = (int) session.save(repairInfo); //save() returns primary key of the inserted record
+	        tx.commit();
+	      }catch (HibernateException e) {
+	         if (tx!=null) tx.rollback();
+	         e.printStackTrace(); 
+	      }finally {
+	         session.close(); 
+	      }
+		return primaryKey;
+	}
+	
 	//delete by assetStatusId
 	public void delete(int assetStatusId){
 		Session session = factory.openSession();
@@ -81,6 +100,32 @@ public class RepairInfoDAO {
 	      }finally {
 	         session.close(); 
 	      }
+	}
+	
+	public boolean update(int id, int type, String repairCompany, String ticketNumber, Date ticketDate, String comments){
+		  Session session = factory.openSession();
+		  boolean flag = true;
+		  Transaction tx = null;
+		  try{
+		     tx = session.beginTransaction();
+		     RepairInfo repairInfo = (RepairInfo) session.get(RepairInfo.class, id);
+		     repairInfo.setType(type);
+		     repairInfo.setRepairCompany(repairCompany);
+		     repairInfo.setTicketNumber(ticketNumber);
+		     if(comments != null)
+		    	 repairInfo.setComments(comments);
+		     if(repairInfo.getTicketDate() == null)
+		    	 repairInfo.setTicketDate(ticketDate);
+			 session.update(repairInfo); 
+		     tx.commit();
+		  }catch (HibernateException e) {
+			 flag = false;
+		     if (tx!=null) tx.rollback();
+		     e.printStackTrace(); 
+		  }finally {
+		     session.close(); 
+		  }	
+		  return flag;
 	}
 	
 	//retrieve and return all the repair information as list

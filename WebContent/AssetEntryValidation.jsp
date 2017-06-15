@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="project.AssetDAO" %>
-<%@ page import="project.AssetAssigned" %>
 <%@ page import="project.AssetAssignedDAO" %>
+<%@ page import="project.RepairInfoDAO" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.io.PrintWriter" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -31,13 +31,18 @@
    		boolean bool = false;
 	   	AssetDAO assetDAO = new AssetDAO();
 	   	AssetAssignedDAO assetAssignedDAO = new AssetAssignedDAO();
+	   	RepairInfoDAO repairInfoDAO = new RepairInfoDAO();
 	   	if(branch != null && assetTag != null && status != 0 && assetType != null){
 	   		if(softwareOs != null){
 		   		if(softwareOs.equals("Yes"))
 		   			bool = true;
 	   		}
 	   		int i = assetDAO.add(branch, assetTag, status, assetType, model, serialNumber, purchaseOrder, unitCost, location, building, roomNumber, bool, description, scanDate);
+	   		//if status is repair create row in repair_info table
 	   		if(i > 0){ 
+	   			if(status == 3){
+		   			int x = repairInfoDAO.addRow(i);
+		   		}
 	   			assetAssignedDAO.add(0, i); //insert row in asset_assigned table
 			   	print.println("<script type=\"text/javascript\">");
 				print.println("alert('Successfully added asset.');");

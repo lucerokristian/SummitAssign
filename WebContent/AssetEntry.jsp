@@ -37,7 +37,15 @@
 <!-- DOC: Apply "page-header-menu-fixed" class to set the mega menu fixed  -->
 <!-- DOC: Apply "page-header-top-fixed" class to set the top menu fixed  -->
 <body class="page-md">
+<%if(session == null || !request.isRequestedSessionIdValid()){%>
+	<jsp:forward page="Login.html"/>
+<%}else{
+	if((session.getAttribute("isAdmin")).equals(true)){ %>
 <%@include file="Header.jsp"%>
+<% }else{ %>
+<%@include file="HeaderAuthorizedUser.jsp"%>
+<% } 
+}%>
 
 <!-- BEGIN PAGE CONTAINER -->
 <div class="page-container">
@@ -205,11 +213,11 @@
 													<option disabled selected value> -- Select an option -- </option>
 													<%
 														AssetDAO assetDAO = new AssetDAO();
-														List assetList = assetDAO.retrieve();
+														List assetList = assetDAO.retrieveByStatus(1);
 														for(Iterator iterator = assetList.iterator(); iterator.hasNext(); ){
 															Asset asset = (Asset) iterator.next();
 													%>
-															<option value="<%= asset.getId()%>"><%= asset.getAssetTag() %></option>
+															<option value="<%= asset.getId()%>"><%= asset.getAssetTag() + " - " + asset.getAssetType() %></option>
 													<%
 														}
 													%>
@@ -230,7 +238,7 @@
 															<option value="<%= account.getId() %>"><%= account.getFirstName() + " " + account.getLastName() %></option>
 													<%
 														}
-													%>
+													%>		<option value="0">No one</option>
 													</select>
 												</div>
 											</div>
@@ -259,24 +267,53 @@
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form class="form-horizontal" role="form">
+									<form class="form-horizontal" role="form" action="AssetEntryRepair.jsp" method="POST">
 										<div class="form-body">
+											<div class="form-group">
+												<label class="col-md-3 control-label">Asset Tag<span style="color:red"> *</span></label>
+												<div class="col-md-9">
+													<select class="form-control" name="assetId" required>
+														<option disabled selected value> -- Select an option -- </option>
+														<%
+															List assetRepairList = assetDAO.retrieveByStatus(3);
+															for(Iterator iterator = assetRepairList.iterator(); iterator.hasNext(); ){
+																Asset asset = (Asset) iterator.next();
+														%>
+																<option value="<%= asset.getId()%>"><%= asset.getAssetTag() + " - " + asset.getAssetType() %></option>
+														<%
+															}
+														%>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-md-3 control-label">Repair Condition<span style="color:red"> *</span></label>
+												<div class="col-md-9">
+													<select class="form-control" name="repairType" required>
+														<option disabled selected value> -- Select an option -- </option>
+														<option value="1">Fair</option>
+														<option value="2">Used</option>
+														<option value="3">Poor</option>
+														<option value="4">Broken</option>
+													</select>
+												</div>
+											</div>
 											<div class="form-group">
 												<label class="col-md-3 control-label">Repair Company <span style="color:red">*</span></label>
 												<div class="col-md-9">
-													<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" required>
+													<input type="text" class="form-control input-inline input-medium" name="repairCompany" placeholder="Enter text" required>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="col-md-3 control-label">Ticket # <span style="color:red">*</span></label>
 												<div class="col-md-9">
-													<input type="text" class="form-control input-inline input-medium" placeholder="Enter text" required>
+													<input type="text" class="form-control input-inline input-medium" name="ticketNumber" placeholder="Enter text" required>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="col-md-3 control-label">Comments</label>
 												<div class="col-md-9">
-													<input type="text" class="form-control input-inline input-medium" placeholder="Enter text">
+													<input type="text" class="form-control input-inline input-medium" name="comments" placeholder="Enter text">
 												</div>
 											</div>
 											<div class="form-actions">
@@ -301,7 +338,7 @@
 </div>
 <!-- END PAGE CONTAINER -->
 
-<%@include file="Footer.jsp"%>
+
 
 <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
@@ -332,11 +369,6 @@ jQuery(document).ready(function() {
     Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	Demo.init(); // init demo features
-    
-   	ChartsFlotcharts.initBarCharts();
-
-	$("#header").load("Header.html");
-	$("#footer").load("Footer.html");
 });
 
 </script>

@@ -7,7 +7,7 @@
 		<div class="container">
 			<!-- BEGIN LOGO -->
 			<div class="page-logo">
-				<a href="Home.html"><h2>SummitAssign Logo</h2></a>
+				<a href="Home.jsp"><h2>SummitAssign Logo</h2></a>
 			</div>
 			<!-- END LOGO -->
 			<!-- BEGIN TOP NAVIGATION MENU -->
@@ -50,7 +50,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="Asset Search"> 
+						<a href="AssetSearch.jsp"> 
 							<i class="fa fa-search"></i>
 							Asset Search
 						</a>
@@ -61,13 +61,13 @@
 						</a>
 						<ul class="dropdown-menu pull-left">
 							<li>
-								<a href="AssetAssignedReport.html">
+								<a href="ReportByUsernameB.jsp">
 								Asset Assigned Report </a>
 							</li>
-							<li>
+							<!--  <li>
 								<a href="AssetStatusReport.html">
 								Asset Status Report </a>
-							</li>
+							</li> -->
 						</ul>
 					</li>
 					<li class="menu-dropdown classic-menu-dropdown ">
@@ -76,20 +76,16 @@
 						</a>
 						<ul class="dropdown-menu pull-left">
 							<li>
-								<a href="UserMaintenance.html">
+								<a href="UserMaintenanceS.jsp">
 								User </a>
 							</li>
 							<li>
-								<a href="MasterDataManagement.html">
+								<a href="UserMaintenanceMasterDataS.jsp">
 								Master Data Management </a>
 							</li>
 							<li>
-								<a href="ChangeAssetTag.html">
-								Change Asset Tag </a>
-							</li>
-							<li>
-								<a href="AssetMove.html">
-								Asset Move </a>
+								<a href="UserMaintainenceMoveAsset.jsp">
+								Move Asset </a>
 							</li>
 						</ul>
 					</li>
